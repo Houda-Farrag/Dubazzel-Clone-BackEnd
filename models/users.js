@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
   },
   roles: {},
   refreshToken: String,
-  likedProducts: {[String] , default:[]}
+  likedProducts: {type:[String] , default:[] }
 }, { timestamps: true });
 
 
