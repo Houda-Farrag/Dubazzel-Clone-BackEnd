@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const logoutController = require('../Controllers/logout')
+const {handleLogout} = require('../controllers/logout')
+const verifyjwt = require("../middleware/verifyJWT")
 
-router.get("/", logoutController.handleLogout)
+router.post("/" ,handleLogout)
 module.exports = router;

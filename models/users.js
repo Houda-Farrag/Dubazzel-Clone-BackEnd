@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const userSchema = mongoose.Schema({
-  username: { type: String, required: true },
+  // username: { type: String },
   email: {
     type: String,
     required: true,
@@ -13,16 +13,17 @@ const userSchema = mongoose.Schema({
       message: 'Invalid email format'
     }
   },
-  password: { type: String, required: true },
+  password: { type: String },
   profile: {
     name: { type: String, required: true },
-    avatar: String,
-    location: { type: String, required: true },
-    bio: String
+    avatar: {type:String , default: ''},
+    location: { type: String },
+    bio: {type:String , default: ''},
+    phoneNumber: { type: String, default:""},
   },
-  roles: {  },
-  phoneNumber: { type: String, default:""},
-  refreshToken: String
+  roles: {},
+  refreshToken: String,
+  likedProducts: {[String] , default:[]}
 }, { timestamps: true });
 
 

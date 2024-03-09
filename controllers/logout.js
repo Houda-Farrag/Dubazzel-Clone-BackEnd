@@ -1,31 +1,25 @@
 const userModel = require("../Models/users");
 
 const handleLogout = async (req, res) => {
-  const refreshToken = req.headers.token;
-
-  if (!refreshToken) {
-    console.log("No jwt cookie found");
-    return res.sendStatus(204); // No content
-  }
+  const { token } = req.body;
+  console.log(token);
 
   try {
-    const foundUser = await userModel.findOne({ refreshToken: refreshToken }); 
+    const foundUser = await userModel.findOne({ refreshToken: token });
 
     if (!foundUser) {
-      return res.sendStatus(204).json({ MSG: "logged out successfully but no jwt Authorization found" });
+      return res.status(201).json({ success: 1, MSG: "Logged out successfully" });
     }
 
-    // Clear refreshToken in the database
     await userModel.findOneAndUpdate(
-      { refreshToken: refreshToken },
+      { refreshToken: token },
       { $set: { refreshToken: "logged out" } }
     );
 
-    res.status(204).json({ MSG: `Logged out successfully ${foundUser.username}` });
+    res.status(201).json({ success: 1, MSG: `Logged out successfully ${foundUser.email}` });
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
 };
-
 
 module.exports = { handleLogout };

@@ -1,9 +1,11 @@
 const path = require('path');
-const mongooseConnect = require('mongoose')
+const mongooseConnect = require("mongoose")
 const express = require('express')
 const multer = require('multer');
+const cookieParser = require('cookie-parser');
 const app = express()
 const cors = require('cors')
+app.use(cookieParser());
 const { ordersRoute } = require('./Routes/ordersRoute')
 const { propertiesRoute } = require('./Routes/propertiesRoute')
 const { shoppingRoute } = require('./Routes/shoppingRoute')
@@ -11,9 +13,8 @@ const { adminsRoute } = require('./Routes/adminsRoute')
 const productRoute = require('./Routes/products');
 const categoryRoute = require('./Routes/categories');
 const userRoute = require('./Routes/users');
-const homePageRoute = require('./Routes/homapage');
 const regiserRoute = require('./Routes/register');
-const loginRoute = require('./Routes/login');
+const loginRoute = require('./routes/login');
 const logoutRoute = require('./Routes/logout')
 const refreshRoute = require('./Routes/refreshToken')
 const registerAdminRoute = require('./Routes/registerAdmin')
@@ -43,13 +44,12 @@ app.set('views', 'views');
 app.use(cors()) // search (cors origins)
 app.use(express.json())
 
-app.use('/dubizzle', homePageRoute);
 app.use("/register", regiserRoute)
 app.use('/registerAdmin', registerAdminRoute);
-app.use("/login", loginRoute)
+app.use("/api/login", loginRoute)
 app.use('/loginAdmin', loginAdminRoute);
 app.use("/refreshToken", refreshRoute)
-app.use("/logout", logoutRoute)
+app.use("/api/logout", logoutRoute)
 app.use('/logoutAdmin', logoutAdminRoute)
 
 

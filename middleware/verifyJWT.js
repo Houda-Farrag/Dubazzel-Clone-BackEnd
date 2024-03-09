@@ -2,7 +2,7 @@ const userModel = require('../Models/users');
 const jwt = require('jsonwebtoken')
 
 const verifyJWT = (req, res, next) => {
-  const token = req.headers.token;
+  const {token} = req.body;
   if (!token) return res.status(401);
 
   jwt.verify(
@@ -12,11 +12,11 @@ const verifyJWT = (req, res, next) => {
       if (err) return res.sendStatus(403); 
 
       try {
-        const foundUser = await userModel.findOne({ username: decoded.UserInfo.username });
+        const foundUser = await userModel.findOne({ email: decoded.UserInfo.email });
 
         if (!foundUser) return res.status(403);
 
-        req.username = decoded.UserInfo.username;
+        req.email = decoded.UserInfo.email;
         req.roles = decoded.UserInfo.roles;
         next();
       } catch (error) {
