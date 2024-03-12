@@ -13,7 +13,7 @@ const { adminsRoute } = require('./Routes/adminsRoute')
 const productRoute = require('./Routes/products');
 const categoryRoute = require('./Routes/categories');
 const userRoute = require('./Routes/users');
-const regiserRoute = require('./Routes/register');
+const regiserRoute = require('./routes/register');
 const loginRoute = require('./routes/login');
 const logoutRoute = require('./Routes/logout')
 const refreshRoute = require('./Routes/refreshToken')
@@ -24,7 +24,6 @@ const routerSubCategory = require('./Routes/sub-categories')
 const RatingReviewsrouter = require('./Routes/ReviewsAndRatings')
 const Chatrouter = require('./Routes/chat')
 // const importcompany=require("./Routes/company.js")
-const ejs = require('ejs')
 // ---------------- connect to database local and 
 const DBlocal = "mongodb://localhost:27017/Dubazzile_Version_2"
 const DBurl = 'mongodb+srv://Mena:dubizzle123456@dubizzle.udouey4.mongodb.net/Dubizzle?retryWrites=true&w=majority'
@@ -37,16 +36,15 @@ mongooseConnect.connect(DBurl).then((data) => {
 })
 
 
-app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 
 app.use(cors()) // search (cors origins)
 app.use(express.json())
 
-app.use("/register", regiserRoute)
+app.use("/api/register", regiserRoute)
 app.use('/registerAdmin', registerAdminRoute);
-app.use("/api/login", loginRoute)
+app.use("/api/login", loginRoute);
 app.use('/loginAdmin', loginAdminRoute);
 app.use("/refreshToken", refreshRoute)
 app.use("/api/logout", logoutRoute)
