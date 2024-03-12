@@ -30,11 +30,12 @@ const handleLoginOrRegister = async (req, res) => {
       {
         UserInfo: {
           email: foundUser.email,
+          _id:foundUser._id,
           roles: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "50m" }
+      { expiresIn: "1d" }
     );
 
     await userModel.findOneAndUpdate(
@@ -69,11 +70,12 @@ const handleLogin = async (req, res) => {
       {
         UserInfo: {
           email: user.email,
+          _id:foundUser._id,
           roles: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "50m" }
+      { expiresIn: "1d" }
     );
 
     await userModel.findOneAndUpdate(

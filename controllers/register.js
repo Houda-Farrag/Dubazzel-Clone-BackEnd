@@ -32,11 +32,12 @@ const handleNewUser = async (req, res) => {
       {
         UserInfo: {
           email: newUser.email,
+          _id: newUser._id,
           roles: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "50m" }
+      { expiresIn: "1d" }
     );
 
     await userModel.findOneAndUpdate(
