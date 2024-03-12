@@ -1,4 +1,4 @@
-const userModel = require("../Models/users");
+const {userModel} = require("../Models/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -21,14 +21,8 @@ const handleNewUser = async (req, res) => {
     const newUser = new userModel({
       email: req.body.email,
       password: hashedPwd,
-<<<<<<< HEAD
       profile: { name: email.split("@")[0].toLowerCase() },
       roles: { User: 2001 },
-=======
-      profile:req.body.profile, 
-      roles: { "User": 2001 },
-      likedProducts:[]
->>>>>>> abed6cab674894431807741cf74d30e214a4810c
     });
 
     await newUser.save();

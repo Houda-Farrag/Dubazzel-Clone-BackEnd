@@ -118,7 +118,7 @@ app.use((err, req, res, next) => {
 
 
 
-const port = 3001
+const port = 3000
 app.listen(port, () => {
     console.log("server connected port : " + port)
 })

@@ -1,4 +1,4 @@
-const userModel = require("../Models/users");
+const {userModel} = require("../Models/users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -29,7 +29,6 @@ const handleLoginOrRegister = async (req, res) => {
     const accessToken = jwt.sign(
       {
         UserInfo: {
-          id: foundUser._id,
           email: foundUser.email,
           roles: roles,
         },
