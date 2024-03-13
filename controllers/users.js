@@ -83,22 +83,5 @@ const getUserFavouriteProducts =async(req,res,next)=>{
     }
 }
 
-const deleteProductFromFavourite = async(req,res,next)=> {
-
-    try {
-        const {userId,productId}=req.params;
-        const user = await  userModel.findByIdAndUpdate(userId,{ $pull : { likedProducts : productId } },{ new: true });
-        if(!user){
-            res.status(401).send('Not logged in')
-        }else{
-            res.status(201).json(user.likedProducts)
-        }
-        // const user=await userModel.find
-    } catch (error) {
-        console.log('Error from Delete',error.message)
-        res.status(500).json({error:"Internal Server Error"})
-    }
-}
-
 module.exports = { getUserProfile, updateProfile, deleteUser,
-     getAllUsers, addProductToFavourite, getUserFavouriteProducts, deleteProductFromFavourite };
+     getAllUsers, addProductToFavourite, getUserFavouriteProducts };
