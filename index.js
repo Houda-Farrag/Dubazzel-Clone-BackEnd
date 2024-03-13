@@ -65,7 +65,7 @@ const upload = multer({storage})
 // creating upload endpoint
 app.use('/images' , express.static('./upload/images'))
 
-app.post('/upload', upload.single('product'), (req, res) => {
+app.post('/upload', upload.array('product' , 10), (req, res) => {
     try {
         if (!req.file) {
             throw new Error('No file uploaded');
