@@ -28,6 +28,7 @@ console.log(email)
     const accessToken = jwt.sign(
       {
         UserInfo: {
+          id: foundUser._id,
           email: foundUser.email,
           roles: roles,
         },

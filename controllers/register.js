@@ -17,7 +17,8 @@ const handleNewUser = async (req, res) => {
       email: req.body.email,
       password: hashedPwd,
       profile:req.body.profile, 
-      roles: { "User": 2001 }
+      roles: { "User": 2001 },
+      likedProducts:[]
     });
 
     await newUser.save();

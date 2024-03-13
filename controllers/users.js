@@ -48,5 +48,57 @@ const deleteUser = async (req, res, next) => {
     }
 };
 
+const addProductToFavourite = async (req, res, next) => {
 
-module.exports = { getUserProfile, updateProfile, deleteUser  ,getAllUsers};
+    try {
+
+        const {userId,productId} = req.params
+        // const userId = req.userId
+        
+        const user = await userModel.findById(userId)
+
+        const productIndex = user.likedProducts.indexOf(productId);
+
+        if (productIndex === -1) {
+            user.likedProducts.push(productId)
+            await user.save()
+            return res.status(201).json({ MSG: "Added to favourites",user })
+        } else {
+            return res.status(500).json({ MSG: 'This Product is already in your Favorites' })
+        }
+
+    } catch (error) {
+
+        return res.status(500).json({ MSG: error.message })
+    }
+}
+
+const getUserFavouriteProducts =async(req,res,next)=>{
+    try {
+        const {id:userId} = req.params
+        const user = await userModel.findById(userId).populate("likedProducts")
+        res.status(200).json({"user Favourite":user.likedProducts})
+    } catch (error) {
+        res.status(500).json({error:"Internal Server Error"})
+    }
+}
+
+const deleteProductFromFavourite = async(req,res,next)=> {
+
+    try {
+        const {userId,productId}=req.params;
+        const user = await  userModel.findByIdAndUpdate(userId,{ $pull : { likedProducts : productId } },{ new: true });
+        if(!user){
+            res.status(401).send('Not logged in')
+        }else{
+            res.status(201).json(user.likedProducts)
+        }
+        // const user=await userModel.find
+    } catch (error) {
+        console.log('Error from Delete',error.message)
+        res.status(500).json({error:"Internal Server Error"})
+    }
+}
+
+module.exports = { getUserProfile, updateProfile, deleteUser,
+     getAllUsers, addProductToFavourite, getUserFavouriteProducts, deleteProductFromFavourite };

@@ -23,10 +23,15 @@ const userSchema = mongoose.Schema({
   },
   roles: {},
   refreshToken: String,
-  likedProducts: {[String] , default:[]}
+  likedProducts: [{
+    type: mongoose.SchemaTypes.ObjectId,
+      ref: "product",
+      default:[]
+  }
+  ]
 }, { timestamps: true });
 
 
 const userModel = mongoose.model('User' , userSchema)
 
-module.exports = userModel
+module.exports = {userModel}
