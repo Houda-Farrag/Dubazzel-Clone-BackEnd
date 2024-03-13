@@ -1,4 +1,4 @@
-const { userModel } = require('../Models/users');
+const { userModel } = require('../Models/users')
 
 const getUserProfile = async (req, res, next) => {
     const id = req.params.id;
@@ -6,16 +6,18 @@ const getUserProfile = async (req, res, next) => {
         const yourProfile = await userModel.findOne({ _id: id });
         res.status(201).json({ Profile_id: id, Profile: yourProfile });
     } catch (err) {
+        console.log(err)
         res.status(401).json({ MSG: "That User id is invalid" });
     }
 };
 
 const getAllUsers = async (req, res, next) => {
     try {
-        const users = await userModel.find({});
-        res.status(201).json({ All_Users: users });
+        const users = await userModel.find();
+        res.status(201).json(users);
     } catch (err) {
-        res.status(401).json({ MSG: "That User id is invalid" });
+        console.log(err)
+        res.status(401).json({ MSG: `${err}`, });
     }
 };
 
@@ -49,4 +51,4 @@ const deleteUser = async (req, res, next) => {
 };
 
 
-module.exports = { getUserProfile, updateProfile, deleteUser  ,getAllUsers};
+module.exports = { getUserProfile, updateProfile, deleteUser, getAllUsers };

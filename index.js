@@ -11,8 +11,8 @@ const { propertiesRoute } = require('./Routes/propertiesRoute')
 const { shoppingRoute } = require('./Routes/shoppingRoute')
 const { adminsRoute } = require('./Routes/adminsRoute')
 const productRoute = require('./Routes/products');
-const categoryRoute = require('./Routes/categories');
-const userRoute = require('./Routes/users');
+const categoryRoute = require('./routes/categories');
+const userRoute = require('./routes/users');
 const regiserRoute = require('./Routes/register');
 const loginRoute = require('./routes/login');
 const logoutRoute = require('./Routes/logout')
@@ -56,16 +56,16 @@ app.use('/logoutAdmin', logoutAdminRoute)
 // Multer Setup for storing imaegs
 const storage = multer.diskStorage({
     destination: './upload/images',
-    filename: (req , file , cb)=>{
-        return cb(null , `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    filename: (req, file, cb) => {
+        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
 })
 
-const upload = multer({storage})
+const upload = multer({ storage })
 
 
 // creating upload endpoint
-app.use('/images' , express.static('./upload/images'))
+app.use('/images', express.static('./upload/images'))
 
 app.post('/upload', upload.single('product'), (req, res) => {
     try {
@@ -74,7 +74,7 @@ app.post('/upload', upload.single('product'), (req, res) => {
         }
         res.json({
             success: 1,
-            image_url:`http://localhost:${port}/images/${req.file.filename}`
+            image_url: `http://localhost:${port}/images/${req.file.filename}`
         });
     } catch (error) {
         console.error('Error uploading file:', error);
