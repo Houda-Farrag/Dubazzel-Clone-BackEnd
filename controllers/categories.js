@@ -48,11 +48,12 @@ const getAllProductsOfCategory = async (req, res, next) => {
 const postCategory = async (req, res, next) => {
     let cat = req.body
     try {
+        console.log(cat)
         const newCategory = await categoryModel.create(cat)
         res.status(201).json({ MSG: "category added", category: newCategory })
     }
     catch (err) {
-        res.status(401).json({ MSG: "there is something wrong in inserting categories" })
+        res.status(401).json({ MSG: "there is something wrong in inserting categories" + err })
     }
 };
 

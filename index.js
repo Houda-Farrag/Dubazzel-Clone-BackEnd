@@ -6,23 +6,23 @@ const cookieParser = require('cookie-parser');
 const app = express()
 const cors = require('cors')
 app.use(cookieParser());
-const { ordersRoute } = require('./Routes/ordersRoute')
-const { propertiesRoute } = require('./Routes/propertiesRoute')
-const { shoppingRoute } = require('./Routes/shoppingRoute')
-const { adminsRoute } = require('./Routes/adminsRoute')
-const productRoute = require('./Routes/products');
+const { ordersRoute } = require('./routes/ordersRoute')
+const { propertiesRoute } = require('./routes/propertiesRoute')
+const { shoppingRoute } = require('./routes/shoppingRoute')
+const { adminsRoute } = require('./routes/adminsRoute')
+const productRoute = require('./routes/products');
 const categoryRoute = require('./routes/categories');
 const userRoute = require('./routes/users');
-const regiserRoute = require('./Routes/register');
+const regiserRoute = require('./routes/register');
 const loginRoute = require('./routes/login');
-const logoutRoute = require('./Routes/logout')
-const refreshRoute = require('./Routes/refreshToken')
-const registerAdminRoute = require('./Routes/registerAdmin')
-const loginAdminRoute = require('./Routes/loginAdmin')
-const logoutAdminRoute = require('./Routes/logoutAdmin')
+const logoutRoute = require('./routes/logout')
+const refreshRoute = require('./routes/refreshToken')
+const registerAdminRoute = require('./routes/registerAdmin')
+const loginAdminRoute = require('./routes/loginAdmin')
+const logoutAdminRoute = require('./routes/logoutAdmin')
 const routerSubCategory = require('./Routes/sub-categories')
-const RatingReviewsrouter = require('./Routes/ReviewsAndRatings')
-const Chatrouter = require('./Routes/chat')
+const RatingReviewsrouter = require('./routes/ReviewsAndRatings')
+const Chatrouter = require('./routes/chat')
 // const importcompany=require("./Routes/company.js")
 // ---------------- connect to database local and 
 const DBlocal = "mongodb://localhost:27017/Dubazzile_Version_2"
@@ -65,7 +65,7 @@ const upload = multer({ storage })
 // creating upload endpoint
 app.use('/images', express.static('./upload/images'))
 
-app.post('/upload', upload.array('product' , 10), (req, res) => {
+app.post('/upload', upload.array('product', 10), (req, res) => {
     try {
         if (!req.file) {
             throw new Error('No file uploaded');

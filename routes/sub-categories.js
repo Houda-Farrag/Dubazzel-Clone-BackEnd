@@ -5,7 +5,9 @@ const verifyJWT = require('../middleware/verifyJWT')
 
 routerSubCategory.get('/ByName', getCategoryByName)
 routerSubCategory.get('/', getAllSubCategories)
-routerSubCategory.post('/', verifyJWT, addSubCategory)
+// routerSubCategory.post('/', verifyJWT, addSubCategory)
+routerSubCategory.post('/',  addSubCategory)
+
 routerSubCategory.get('/:id', getAllProductOfSubCategory)
 routerSubCategory.delete('/:id', verifyJWT, deleteSubCategory)
 routerSubCategory.patch('/:id', verifyJWT, updateSubCategory)

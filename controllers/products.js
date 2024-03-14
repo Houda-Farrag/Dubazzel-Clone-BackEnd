@@ -16,7 +16,7 @@ const getAllProducts = async (req, res, next) => {
         console.log(req.user);
         console.log(req.roles);
         const products = await productModel.find({});
-        res.status(201).json({ products });
+        res.status(201).json(products);
 
     } catch (err) {
         res.status(401).json({ MSG: "There is something went wrong in getting all proucts" });
