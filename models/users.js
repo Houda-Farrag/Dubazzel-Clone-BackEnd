@@ -22,7 +22,12 @@ const userSchema = mongoose.Schema({
   },
   roles: {},
   refreshToken: String,
-  likedProducts: { type: [String], default: [] }
+  likedProducts: [{
+    type: mongoose.SchemaTypes.ObjectId,
+      ref: "product",
+      default:[]
+  }
+  ]
 }, { timestamps: true });
 
 const userModel = mongoose.model('user', userSchema)

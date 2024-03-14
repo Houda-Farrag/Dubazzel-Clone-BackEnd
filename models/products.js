@@ -30,19 +30,14 @@ const productSchema = mongoose.Schema(
     location: {
       type: String,
       default: "",
-    //   required: true,
+      required: true,
     },
-    subCategory: String,
+    subCategoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "sub-categories",
+      required: true,
+    },
     contact_type: String,
-    // ratingsId:{
-    //     type:[Number],
-    //     default:[]
-    // },
-    // subCategoryId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "sub-categories",
-    //   required: true,
-    // },
   },
   { timestamps: true }
 );
