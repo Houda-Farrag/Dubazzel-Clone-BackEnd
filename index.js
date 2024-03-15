@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const app = express()
 const cors = require('cors')
 app.use(cookieParser());
-<<<<<<< HEAD
 const { ordersRoute } = require('./Routes/ordersRoute')
 const { propertiesRoute } = require('./Routes/propertiesRoute')
 const { shoppingRoute } = require('./Routes/shoppingRoute')
@@ -14,15 +13,6 @@ const { adminsRoute } = require('./Routes/adminsRoute')
 const productRoute = require('./Routes/products');
 const categoryRoute = require('./routes/categories');
 const userRoute = require('./Routes/users');
-=======
-const { ordersRoute } = require('./routes/ordersRoute')
-const { propertiesRoute } = require('./routes/propertiesRoute')
-const { shoppingRoute } = require('./routes/shoppingRoute')
-const { adminsRoute } = require('./routes/adminsRoute')
-const productRoute = require('./routes/products');
-const categoryRoute = require('./routes/categories');
-const userRoute = require('./routes/users');
->>>>>>> 5d59f2a870a595f16929b0e9226722c1af777fef
 const regiserRoute = require('./routes/register');
 const loginRoute = require('./routes/login');
 const logoutRoute = require('./routes/logout')

@@ -14,7 +14,7 @@ const productSchema = mongoose.Schema(
       ref: "User",
     },
     price_type: String,
-    location: {
+     location: {
       type: String,
       default: "",
       required: true,
