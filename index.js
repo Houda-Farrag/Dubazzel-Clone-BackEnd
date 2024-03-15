@@ -80,7 +80,6 @@ app.post('/upload', upload.array('product', 10), (req, res) => {
     }
 });
 
-
 app.use('/orders', ordersRoute)
 app.use('/shoppings', shoppingRoute)
 app.use('/properties', propertiesRoute)

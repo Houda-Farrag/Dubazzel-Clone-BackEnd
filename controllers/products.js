@@ -28,25 +28,26 @@ const postProduct = async (req, res, next) => {
     console.log(data);
     try {
         const products = await productModel.find({});
-        let id;
-        if (products.length > 0) {
-            let last_product_array = products.slice(-1);
-            let last_product = last_product_array[0];
-            id = last_product.id + 1;
-        } else {
-            id = 1;
-        }
+        // let id;
+        // if (products.length > 0) {
+        //     let last_product_array = products.slice(-1);
+        //     let last_product = last_product_array[0];
+        //     id = last_product.id + 1;
+        // } else {
+        //     id = 1;
+        // }
         const newProduct = new productModel({
-            id: id,
+
             name: req.body.name,
             description: req.body.description,
             images: req.body.images,
             sellerData: req.body.sellerData,
-            price_type: req.body.price_type,
-            category: req.body.category,
             price: req.body.price,
             location: req.body.location,
-            subCategory: req.body.subCategory,
+            subCategoryId: req.body.subCategoryId,
+            contact_type: req.body.contact_type
+            // price_type: req.body.price_type,
+            // category: req.body.category,
         });
         await newProduct.save();
         res.status(201).json({ success: 1, product: newProduct });
