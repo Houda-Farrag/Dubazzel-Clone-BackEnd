@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const handleLoginOrRegister = async (req, res) => {
   const { email } = req.body;
+  console.log(email)
 
   if (!email) {
     return res.status(403).json({ message: "email is required" });
@@ -49,6 +50,11 @@ const handleLoginOrRegister = async (req, res) => {
   }
 };
 
+
+
+
+
+
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
@@ -70,7 +76,7 @@ const handleLogin = async (req, res) => {
       {
         UserInfo: {
           email: user.email,
-          _id:foundUser._id,
+          _id:user._id,
           roles: roles,
         },
       },

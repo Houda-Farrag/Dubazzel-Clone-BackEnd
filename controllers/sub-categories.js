@@ -11,6 +11,16 @@ const getAllSubCategories = async(req,res,next)=>{
     }
 }
 
+const getSubCategory = async(req,res,next)=>{
+    const {subCategory} = req.params
+    try{
+        const subCategorydata = await subCategoriesModel.find({name:subCategory})
+        res.status(200).json({subCategoryId: subCategorydata._id})
+    }catch(err){
+        res.status(500).json({message:err.message})
+    }
+}
+
 const updateSubCategory = async(req,res,next)=>{
     let {id} = req.params
     let updates = req.body
@@ -32,7 +42,6 @@ const deleteSubCategory = async(req,res,next)=>{
     }
 }
 
-
 const getAllProductOfSubCategory = async(req,res,next)=>{
     let {id} = req.params;
     try{
@@ -44,13 +53,13 @@ const getAllProductOfSubCategory = async(req,res,next)=>{
 }
 
 const addSubCategory = async(req,res,next)=>{
-    let subCategory = req.body
+    let subCat = req.body
     try{
-        const newSubCategory = await subCategoriesModel.create(subCategory)
-        res.status(201).json({message:"sub Category added","sub category":newSubCategory})
+        const newSubCategory = await subCategoriesModel.create(subCat)
+        res.status(200).json({subCategory: newSubCategory})
     }catch(err){
         res.status(500).json({message:err.message})
     }
 }
 
-module.exports = {getAllSubCategories,updateSubCategory,deleteSubCategory,getAllProductOfSubCategory,addSubCategory}
+module.exports = {getAllSubCategories,getSubCategory , updateSubCategory,deleteSubCategory,getAllProductOfSubCategory,addSubCategory}

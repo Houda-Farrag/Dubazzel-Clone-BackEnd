@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get('/' , getAllCategories)
 router.get('/:id/products' , getAllProductsOfCategory)
-router.post('/' , verifyJWT , postCategory) // admin
-router.patch("/:id" , verifyJWT , updateCategory) // admin
-router.delete("/:id" , verifyJWT , deleteCategory) //admin
+router.post('/' , postCategory) 
+router.patch("/:id" , verifyJWT , updateCategory) 
+router.delete("/:id" , verifyJWT , deleteCategory) 
 
 module.exports = router
