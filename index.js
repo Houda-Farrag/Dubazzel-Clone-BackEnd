@@ -23,7 +23,6 @@ const logoutAdminRoute = require('./routes/logoutAdmin')
 const routerSubCategory = require('./Routes/sub-categories')
 const RatingReviewsrouter = require('./routes/ReviewsAndRatings')
 const Chatrouter = require('./routes/chat')
-// const importcompany=require("./Routes/company.js")
 // ---------------- connect to database local and 
 const DBlocal = "mongodb://localhost:27017/Dubazzile_Version_2"
 const DBurl = 'mongodb+srv://Mena:dubizzle123456@dubizzle.udouey4.mongodb.net/Dubizzle?retryWrites=true&w=majority'
@@ -57,28 +56,27 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
-})
+});
 
-const upload = multer({ storage })
+const upload = multer({ storage, limits: { files: 5 } });
 
+app.use('/images', express.static('./upload/images'));
 
-// creating upload endpoint
-app.use('/images', express.static('./upload/images'))
-
-app.post('/upload', upload.array('product', 10), (req, res) => {
+app.post('/upload', upload.array('images', 5), (req, res) => {
     try {
-        if (!req.file) {
-            throw new Error('No file uploaded');
-        }
+        const imageUrls = req.files.map(file => {
+            return `http://localhost:${port}/images/${file.filename}`;
+        });
         res.json({
             success: 1,
-            image_url: `http://localhost:${port}/images/${req.file.filename}`
+            image_urls: imageUrls
         });
     } catch (error) {
         console.error('Error uploading file:', error);
         res.status(500).json({ success: 0, message: 'Internal server error' });
     }
 });
+
 
 app.use('/orders', ordersRoute)
 app.use('/shoppings', shoppingRoute)

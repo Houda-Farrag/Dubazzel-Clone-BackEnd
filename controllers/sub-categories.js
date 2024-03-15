@@ -11,15 +11,20 @@ const getAllSubCategories = async (req, res, next) => {
     }
 }
 
-const getSubCategory = async(req,res,next)=>{
-    const {subCategory} = req.params
-    try{
-        const subCategorydata = await subCategoriesModel.find({name:subCategory})
-        res.status(200).json({subCategoryId: subCategorydata._id})
-    }catch(err){
-        res.status(500).json({message:err.message})
+const getCategoryByName = async (req, res, next) => {
+    const { subCatName } = req.params;
+    try {
+        const subCategorydata = await subCategoriesModel.findOne({ name: subCatName });
+        if (subCategorydata) {
+            res.status(200).json({ subCategoryId: subCategorydata._id });
+        } else {
+            res.status(404).json({ message: "Subcategory not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
+
 
 const updateSubCategory = async(req,res,next)=>{
     let {id} = req.params
@@ -62,4 +67,4 @@ const addSubCategory = async(req,res,next)=>{
     }
 }
 
-module.exports = {getAllSubCategories,getSubCategory , updateSubCategory,deleteSubCategory,getAllProductOfSubCategory,addSubCategory}
+module.exports = {getAllSubCategories,getCategoryByName , updateSubCategory,deleteSubCategory,getAllProductOfSubCategory,addSubCategory}

@@ -27,10 +27,11 @@ const productSchema = mongoose.Schema(
     contact_type: String,
     phoneNumber: String,
     propertyType: String,
-    area:Number,
+    area:String,
     amenities:[String],
-    bedRooms:Number,
-    bathRooms:Number
+    bedRooms:String,
+    bathRooms:String,
+    model: String,
   },
   { timestamps: true }
 );

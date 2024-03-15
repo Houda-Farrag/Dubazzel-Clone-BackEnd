@@ -25,14 +25,15 @@ const getAllProducts = async (req, res, next) => {
 
 const postProduct = async (req, res, next) => {
     const data = req.body
-    console.log(data);
+    const userID = req.userId
+    console.log(data , userID);
     try{
         const newProduct = new productModel({
           name: req.body.name,
           description: req.body.description,
           price: req.body.price,
           images: req.body.images,
-          sellerId: req.body.sellerId,
+          sellerId: userID,
           price_type: req.body.price_type,
           location: req.body.location,
           subCategoryId: req.body.subCategoryId,
