@@ -5,10 +5,12 @@ const {
   postProduct,
   updateProduct,
   deleteProduct,
-  getAllProducts
+  getAllProducts,
+  getProdBySub_CategoryName
 } = require("../Controllers/products");
 
 router.get("/get/:id", getProduct);
+router.get("/getbysubcateboryname",getProdBySub_CategoryName)
 router.get("/get", getAllProducts);
 router.post("/add", postProduct);
 router.patch("/:id", updateProduct);

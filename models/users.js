@@ -15,10 +15,10 @@ const userSchema = mongoose.Schema({
   password: { type: String },
   profile: {
     name: { type: String, required: true },
-    avatar: {type:String , default: ''},
+    avatar: { type: String, default: '' },
     location: { type: String },
-    bio: {type:String , default: ''},
-    phoneNumber: { type: String, default:""},
+    bio: { type: String, default: '' },
+    phoneNumber: { type: String, default: "" },
   },
   roles: {},
   refreshToken: String,
@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema({
   ]
 }, { timestamps: true });
 
+const userModel = mongoose.model('user', userSchema)
 
-const userModel = mongoose.model('User' , userSchema)
 
-module.exports = {userModel}
+module.exports = { userModel }

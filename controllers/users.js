@@ -13,7 +13,7 @@ const getUserProfile = async (req, res, next) => {
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await userModel.find({});
-        res.status(201).json({ All_Users: users });
+        res.status(201).json(users);
     } catch (err) {
         res.status(401).json({ MSG: "That User id is invalid" });
     }
@@ -52,9 +52,9 @@ const addProductToFavourite = async (req, res, next) => {
 
     try {
 
-        const {userId,productId} = req.params
+        const { userId, productId } = req.params
         // const userId = req.userId
-        
+
         const user = await userModel.findById(userId)
 
         const productIndex = user.likedProducts.indexOf(productId);
@@ -62,7 +62,7 @@ const addProductToFavourite = async (req, res, next) => {
         if (productIndex === -1) {
             user.likedProducts.push(productId)
             await user.save()
-            return res.status(201).json({ MSG: "Added to favourites",user })
+            return res.status(201).json({ MSG: "Added to favourites", user })
         } else {
             return res.status(500).json({ MSG: 'This Product is already in your Favorites' })
         }
@@ -73,15 +73,17 @@ const addProductToFavourite = async (req, res, next) => {
     }
 }
 
-const getUserFavouriteProducts =async(req,res,next)=>{
+const getUserFavouriteProducts = async (req, res, next) => {
     try {
-        const {id:userId} = req.params
+        const { id: userId } = req.params
         const user = await userModel.findById(userId).populate("likedProducts")
-        res.status(200).json({"user Favourite":user.likedProducts})
+        res.status(200).json({ "user Favourite": user.likedProducts })
     } catch (error) {
-        res.status(500).json({error:"Internal Server Error"})
+        res.status(500).json({ error: "Internal Server Error" })
     }
 }
 
-module.exports = { getUserProfile, updateProfile, deleteUser,
-     getAllUsers, addProductToFavourite, getUserFavouriteProducts };
+module.exports = {
+    getUserProfile, updateProfile, deleteUser,
+    getAllUsers, addProductToFavourite, getUserFavouriteProducts
+};
