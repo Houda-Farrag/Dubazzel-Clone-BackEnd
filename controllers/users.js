@@ -20,10 +20,10 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const updateProfile = async (req, res, next) => {
-    const { id } = req.params;
+    const userID = req.userId
     const updates = req.body;
     try {
-        const updatedProfile = await userModel.findOneAndUpdate({ _id: id }, updates, { new: true, runValidators: true });
+        const updatedProfile = await userModel.findOneAndUpdate({ _id: userID }, updates, { new: true, runValidators: true });
         if (updatedProfile) {
             res.status(201).json({ MSG: "Update Successful", updated_Profile: updatedProfile });
         } else {
