@@ -85,7 +85,6 @@ app.use('/admins', adminsRoute)
 app.use('/categories', categoryRoute);
 app.use('/users', userRoute);
 app.use('/products', productRoute);
-// app.use("/company",importcompany)
 
 app.use('/reviews-rating', RatingReviewsrouter);
 app.use('/sub-category', routerSubCategory);

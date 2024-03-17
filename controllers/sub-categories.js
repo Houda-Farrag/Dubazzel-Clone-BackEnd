@@ -51,7 +51,7 @@ const getAllProductOfSubCategory = async(req,res,next)=>{
     let {id} = req.params;
     try{
         const products=  await productModel.find({subCategoryId:id})
-        res.status(200).json({subCategoryId:id,"Products Of SubCategory":products})
+        res.status(200).json({subCategoryId:id, subcategoryProducts:products})
     }catch(err){
         res.status(401).json({message:err.message});
     }
