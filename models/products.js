@@ -11,7 +11,7 @@ const productSchema = mongoose.Schema(
     },
     sellerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
     price_type: String,
      location: {

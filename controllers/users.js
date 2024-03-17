@@ -1,10 +1,10 @@
-const { userModel } = require('../Models/users');
+const userModel  = require('../Models/users');
 
 const getUserProfile = async (req, res, next) => {
     const id = req.params.id;
     try {
-        const yourProfile = await userModel.findOne({ _id: id });
-        res.status(201).json({ Profile_id: id, Profile: yourProfile });
+        const userData = await userModel.findOne({ _id: id });
+        res.status(200).json({ Profile_id: id, userData });
     } catch (err) {
         res.status(401).json({ MSG: "That User id is invalid" });
     }

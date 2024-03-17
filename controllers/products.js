@@ -3,13 +3,16 @@ const { productModel } = require("../Models/products")
 const getProduct = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const product = await productModel.findById({ _id: id });
-        console.log(product)
-        res.status(201).json({ product });
+        const product = await productModel.findById({ _id: id }).populate({
+            path: 'sellerId',
+            select: '-refreshToken' 
+        });
+        res.status(200).json({ product });
     } catch (err) {
-        res.status(401).json({ MSG: "There is something went wrong in your product id" });
+        res.status(500).json({ error: "Something went wrong while fetching the product." });
     }
 }
+
 
 const getAllProducts = async (req, res, next) => {
     try {
