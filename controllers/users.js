@@ -1,10 +1,10 @@
-const { userModel } = require('../Models/users');
+const userModel  = require('../Models/users');
 
 const getUserProfile = async (req, res, next) => {
     const id = req.params.id;
     try {
-        const yourProfile = await userModel.findOne({ _id: id });
-        res.status(201).json({ Profile_id: id, Profile: yourProfile });
+        const userData = await userModel.findOne({ _id: id });
+        res.status(200).json({ Profile_id: id, userData });
     } catch (err) {
         res.status(401).json({ MSG: "That User id is invalid" });
     }
@@ -13,17 +13,17 @@ const getUserProfile = async (req, res, next) => {
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await userModel.find({});
-        res.status(201).json({ All_Users: users });
+        res.status(201).json(users);
     } catch (err) {
         res.status(401).json({ MSG: "That User id is invalid" });
     }
 };
 
 const updateProfile = async (req, res, next) => {
-    const { id } = req.params;
+    const userID = req.userId
     const updates = req.body;
     try {
-        const updatedProfile = await userModel.findOneAndUpdate({ _id: id }, updates, { new: true, runValidators: true });
+        const updatedProfile = await userModel.findOneAndUpdate({ _id: userID }, updates, { new: true, runValidators: true });
         if (updatedProfile) {
             res.status(201).json({ MSG: "Update Successful", updated_Profile: updatedProfile });
         } else {
@@ -52,9 +52,9 @@ const addProductToFavourite = async (req, res, next) => {
 
     try {
 
-        const {userId,productId} = req.params
+        const { userId, productId } = req.params
         // const userId = req.userId
-        
+
         const user = await userModel.findById(userId)
 
         const productIndex = user.likedProducts.indexOf(productId);
@@ -62,7 +62,7 @@ const addProductToFavourite = async (req, res, next) => {
         if (productIndex === -1) {
             user.likedProducts.push(productId)
             await user.save()
-            return res.status(201).json({ MSG: "Added to favourites",user })
+            return res.status(201).json({ MSG: "Added to favourites", user })
         } else {
             return res.status(500).json({ MSG: 'This Product is already in your Favorites' })
         }
@@ -73,13 +73,13 @@ const addProductToFavourite = async (req, res, next) => {
     }
 }
 
-const getUserFavouriteProducts =async(req,res,next)=>{
+const getUserFavouriteProducts = async (req, res, next) => {
     try {
-        const {id:userId} = req.params
+        const { id: userId } = req.params
         const user = await userModel.findById(userId).populate("likedProducts")
-        res.status(200).json({"user Favourite":user.likedProducts})
+        res.status(200).json({ "user Favourite": user.likedProducts })
     } catch (error) {
-        res.status(500).json({error:"Internal Server Error"})
+        res.status(500).json({ error: "Internal Server Error" })
     }
 }
 

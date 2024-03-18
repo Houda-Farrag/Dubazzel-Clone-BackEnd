@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema(
   {
-    id:{
-        type:Number,
-        required:true
-    },
     name: { type: String, required: true },
     description: { type: String, default: "" },
     price: { type: String, required: true },
@@ -13,36 +9,29 @@ const productSchema = mongoose.Schema(
       type: [String],
       required: true,
     },
-    sellerData: {
-      // type: mongoose.Schema.Types.ObjectId,
-      // ref: "User",
-      userName: {
-        type: String,
-        required: true,
-      },
-      phoneNumber: { type: String, required: true },
+    sellerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
     },
     price_type: String,
-    category: {
-      type: String,
-      required: true,
-    },
-    location: {
+     location: {
       type: String,
       default: "",
-    //   required: true,
+      required: true,
     },
-    subCategory: String,
+    subCategoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "sub-categories",
+      required: true,
+    },
     contact_type: String,
-    // ratingsId:{
-    //     type:[Number],
-    //     default:[]
-    // },
-    // subCategoryId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "sub-categories",
-    //   required: true,
-    // },
+    phoneNumber: String,
+    propertyType: String,
+    area:String,
+    amenities:[String],
+    bedRooms:String,
+    bathRooms:String,
+    model: String,
   },
   { timestamps: true }
 );

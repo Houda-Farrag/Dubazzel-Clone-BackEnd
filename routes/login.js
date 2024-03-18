@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const loginController = require('../controllers/login')
+const {handleLoginOrRegister , handleLogin} = require('../controllers/login')
 
-router.post("/" ,loginController.handleLoginOrRegister)
+router.post("/" ,handleLoginOrRegister)
+router.post("/email-password", handleLogin);
 module.exports = router;

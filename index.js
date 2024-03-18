@@ -11,20 +11,18 @@ const { propertiesRoute } = require('./Routes/propertiesRoute')
 const { shoppingRoute } = require('./Routes/shoppingRoute')
 const { adminsRoute } = require('./Routes/adminsRoute')
 const productRoute = require('./Routes/products');
-const categoryRoute = require('./Routes/categories');
+const categoryRoute = require('./routes/categories');
 const userRoute = require('./Routes/users');
-const regiserRoute = require('./Routes/register');
+const regiserRoute = require('./routes/register');
 const loginRoute = require('./routes/login');
-const logoutRoute = require('./Routes/logout')
-const refreshRoute = require('./Routes/refreshToken')
-const registerAdminRoute = require('./Routes/registerAdmin')
-const loginAdminRoute = require('./Routes/loginAdmin')
-const logoutAdminRoute = require('./Routes/logoutAdmin')
+const logoutRoute = require('./routes/logout')
+const refreshRoute = require('./routes/refreshToken')
+const registerAdminRoute = require('./routes/registerAdmin')
+const loginAdminRoute = require('./routes/loginAdmin')
+const logoutAdminRoute = require('./routes/logoutAdmin')
 const routerSubCategory = require('./Routes/sub-categories')
-const RatingReviewsrouter = require('./Routes/ReviewsAndRatings')
-const Chatrouter = require('./Routes/chat')
-// const importcompany=require("./Routes/company.js")
-const ejs = require('ejs')
+const RatingReviewsrouter = require('./routes/ReviewsAndRatings')
+const Chatrouter = require('./routes/chat')
 // ---------------- connect to database local and 
 const DBlocal = "mongodb://localhost:27017/Dubazzile_Version_2"
 const DBurl = 'mongodb+srv://Mena:dubizzle123456@dubizzle.udouey4.mongodb.net/Dubizzle?retryWrites=true&w=majority'
@@ -37,16 +35,15 @@ mongooseConnect.connect(DBurl).then((data) => {
 })
 
 
-app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 
 app.use(cors()) // search (cors origins)
 app.use(express.json())
 
-app.use("/register", regiserRoute)
+app.use("/api/register", regiserRoute)
 app.use('/registerAdmin', registerAdminRoute);
-app.use("/api/login", loginRoute)
+app.use("/api/login", loginRoute);
 app.use('/loginAdmin', loginAdminRoute);
 app.use("/refreshToken", refreshRoute)
 app.use("/api/logout", logoutRoute)
@@ -56,25 +53,23 @@ app.use('/logoutAdmin', logoutAdminRoute)
 // Multer Setup for storing imaegs
 const storage = multer.diskStorage({
     destination: './upload/images',
-    filename: (req , file , cb)=>{
-        return cb(null , `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    filename: (req, file, cb) => {
+        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
-})
+});
 
-const upload = multer({storage})
+const upload = multer({ storage, limits: { files: 5 } });
 
+app.use('/images', express.static('./upload/images'));
 
-// creating upload endpoint
-app.use('/images' , express.static('./upload/images'))
-
-app.post('/upload', upload.single('product'), (req, res) => {
+app.post('/upload', upload.array('images', 5), (req, res) => {
     try {
-        if (!req.file) {
-            throw new Error('No file uploaded');
-        }
+        const imageUrls = req.files.map(file => {
+            return `http://localhost:${port}/images/${file.filename}`;
+        });
         res.json({
             success: 1,
-            image_url:`http://localhost:${port}/images/${req.file.filename}`
+            image_urls: imageUrls
         });
     } catch (error) {
         console.error('Error uploading file:', error);
@@ -90,7 +85,6 @@ app.use('/admins', adminsRoute)
 app.use('/categories', categoryRoute);
 app.use('/users', userRoute);
 app.use('/products', productRoute);
-// app.use("/company",importcompany)
 
 app.use('/reviews-rating', RatingReviewsrouter);
 app.use('/sub-category', routerSubCategory);
