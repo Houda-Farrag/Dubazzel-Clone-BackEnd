@@ -20,6 +20,16 @@ const userSchema = mongoose.Schema({
     location: { type: String },
     bio: {type:String , default: ''},
     phoneNumber: { type: String, default:""},
+    about: { type: String, default:""},
+    gender: {
+      type: String,
+      enum:[ "Male", "Female","Prefer not to say"]
+    },
+    dateOfBirth:{
+      year:{ type: Number},
+      month:{ type: Number},
+      day:{ type: Number}
+    }
   },
   roles: {},
   refreshToken: String,

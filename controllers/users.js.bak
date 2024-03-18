@@ -93,14 +93,6 @@ const deleteProductFromFavourite = async(req,res,next) =>{
     }
 }
 
-const updateUserProfile = async(req,res,next)=>{
-    try {
-        
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({error:"Internal Server Error"})
+module.exports = { getUserProfile, updateProfile, deleteUser,
+     getAllUsers, addProductToFavourite, getUserFavouriteProducts, deleteProductFromFavourite
     }
-}
-
-module.exports = { getUserProfile, updateProfile, deleteUser,getAllUsers, 
-addProductToFavourite, getUserFavouriteProducts, deleteProductFromFavourite,updateUserProfile}
