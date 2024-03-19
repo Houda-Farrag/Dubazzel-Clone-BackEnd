@@ -51,10 +51,6 @@ const handleLoginOrRegister = async (req, res) => {
 };
 
 
-
-
-
-
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);

@@ -93,4 +93,15 @@ const getProdBySub_CategoryName = async (req, res, next) => {
     }
 }
 
-module.exports = { postProduct, getProduct, deleteProduct, updateProduct, getAllProducts, getProdBySub_CategoryName }
+const getSellerAds = async (req, res, next) => {
+    const { userId } = req.params
+    if (!userId) res.json({ Msg: "please send user ID" })
+    try {
+        const Ads = await productModel.find({ sellerId: userId })
+        res.json({Ads:Ads})
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+module.exports = { postProduct, getProduct, getSellerAds , deleteProduct, updateProduct, getAllProducts, getProdBySub_CategoryName }

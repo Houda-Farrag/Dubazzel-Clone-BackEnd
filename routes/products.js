@@ -6,11 +6,13 @@ const {
   updateProduct,
   deleteProduct,
   getAllProducts,
-  getProdBySub_CategoryName
+  getProdBySub_CategoryName, 
+  getSellerAds
 } = require("../Controllers/products");
 const verifyJWT = require("../middleware/verifyJWT");
 
 router.get("/get/:id", getProduct);
+router.get("/getUserAds/:userId", getSellerAds);
 router.get("/getbysubcateboryname",getProdBySub_CategoryName)
 router.get("/get", getAllProducts);
 router.post("/add", verifyJWT ,postProduct);
