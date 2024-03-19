@@ -32,6 +32,7 @@ const productSchema = mongoose.Schema(
     bedRooms:String,
     bathRooms:String,
     model: String,
+    brand:String,
   },
   { timestamps: true }
 );

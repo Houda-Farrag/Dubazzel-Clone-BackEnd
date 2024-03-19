@@ -47,6 +47,7 @@ const postProduct = async (req, res, next) => {
           amenities: req.body.amenities,
           bedRooms: req.body.bedRooms,
           bathRooms: req.body.bathRooms,
+          brand: req.body.brand,
         });
         await newProduct.save();
         res.status(201).json({ success: 1, product: newProduct });
