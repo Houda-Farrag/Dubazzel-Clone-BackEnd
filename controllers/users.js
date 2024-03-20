@@ -19,6 +19,16 @@ const getAllUsers = async (req, res, next) => {
     }
 };
 
+const getMyProfile = async (req, res, next) => {
+    try {
+        const userID = req.userId;
+        const myProfile = await userModel.findOne({ _id: userID });
+        res.status(200).json({profile: myProfile})
+    } catch (error) {
+        res.status(404).json({ MSG: "That User id is invalid" });
+    }
+}
+
 const updateProfile = async (req, res, next) => {
     const userID = req.userId
     const updates = req.body;
@@ -85,5 +95,5 @@ const getUserFavouriteProducts = async (req, res, next) => {
 
 module.exports = {
     getUserProfile, updateProfile, deleteUser,
-    getAllUsers, addProductToFavourite, getUserFavouriteProducts
+    getAllUsers, addProductToFavourite, getUserFavouriteProducts , getMyProfile
 };
