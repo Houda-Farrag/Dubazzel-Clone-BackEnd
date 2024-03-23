@@ -12,18 +12,28 @@ const userSchema = mongoose.Schema({
       message: 'Invalid email format'
     }
   },
+  dateOfBirth: {
+    day:{type:String,default:"DD"},
+    month:{type:String,default:"MM"},
+    year:{type:String,default:"YYYY"},
+  },
+  gender: {
+    type: String,
+    enum: ["Male", "Female", "Prefer not to say"]
+  },
+  about: { type: String, default: "" },
   password: { type: String },
+  phoneNumber: { type: String},
   profile: {
     name: { type: String, required: true },
     avatar: { type: String, default: '' },
     location: { type: String },
     bio: { type: String, default: '' },
-    phoneNumber: { type: String, default: "" },
   },
   roles: {},
   refreshToken: String,
   likedProducts: [{
-    type: mongoose.SchemaTypes.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
       ref: "product",
       default:[]
   }

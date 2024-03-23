@@ -1,12 +1,15 @@
 const {getUserProfile , updateProfile , deleteUser , postUser , 
-    getAllUsers, addProductToFavourite , getMyProfile , getUserFavouriteProducts} = require('../Controllers/users')
+    getAllUsers, addProductToFavourite , getMyProfile , getProfileData , getUserFavouriteProducts ,deleteProductFromFavourite } = require('../Controllers/users')
 const express = require('express')
 const router = express.Router()
 const verifyJWT = require('../middleware/verifyJWT')
 
 
 router.get('/getUser/:id', getUserProfile)
-router.get('/:id/favourite', getUserFavouriteProducts)
+router.get('/user',verifyJWT, getProfileData)
+router.get('/favourites',verifyJWT, getUserFavouriteProducts)
+router.post('/addFavourite',verifyJWT ,addProductToFavourite)
+router.delete('/removeFavourite',verifyJWT,deleteProductFromFavourite)
 router.get("/" , getAllUsers)
 router.get("/getMyProfile" , verifyJWT , getMyProfile)
 router.patch('/' , verifyJWT ,updateProfile)
