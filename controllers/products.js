@@ -30,28 +30,57 @@ const getAllProducts = async (req, res, next) => {
 
 const getProductsBySearch = async (req, res, next) => {
   try {
-    const searchQuery = req.query.name.toLowerCase();
+    // Extract search query, location, and price range from the request query
+    const searchQuery = req.query.name ? req.query.name.toLowerCase() : '';
+    const locationQuery = req.query.location ? req.query.location.toLowerCase() : '';
+    const priceRangeQuery = req.query.priceRange ? req.query.priceRange : '';
+
+    // Preprocess search query for sorting
     const sortedSearchQuery = searchQuery
       .split(" ")
       .map((word) => word.split("").sort().join(""))
       .join(" ");
 
+    // Fetch products from the database
     const products = await productModel.find().lean();
 
+    // Filter products based on the search query, location, and price range
     const matchedProducts = products.filter((product) => {
+      // Preprocess product name for sorting
       const sortedProductName = product.name
         .toLowerCase()
         .split(" ")
         .map((word) => word.split("").sort().join(""))
         .join(" ");
-      return sortedProductName.includes(sortedSearchQuery);
+
+      // Check if the sorted product name includes the sorted search query
+      const nameMatch = sortedProductName.includes(sortedSearchQuery);
+
+      // Check if the location matches
+      const locationMatch = !locationQuery || product.location.toLowerCase().includes(locationQuery);
+
+      // Check if the price falls within the specified range
+      let priceMatch = true;
+      if (priceRangeQuery) {
+        const [minPrice, maxPrice] = priceRangeQuery.split("-").map(Number);
+        if (minPrice && product.price < minPrice) {
+          priceMatch = false;
+        }
+        if (maxPrice && product.price > maxPrice) {
+          priceMatch = false;
+        }
+      }
+
+      // Return true if all conditions match
+      return nameMatch && locationMatch && priceMatch;
     });
 
     res.json({matchedProducts: matchedProducts});
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json({ error: error.message });
   }
 };
+
 
 const postProduct = async (req, res, next) => {
   const data = req.body;
