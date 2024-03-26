@@ -1,4 +1,5 @@
 const { productModel } = require("../Models/products");
+const { subCategoriesModel } = require("../Models/sub-categories");
 
 const getProduct = async (req, res, next) => {
   const { id } = req.params;
@@ -30,36 +31,32 @@ const getAllProducts = async (req, res, next) => {
 
 const getProductsBySearch = async (req, res, next) => {
   try {
-    // Extract search query, location, and price range from the request query
-    const searchQuery = req.query.name ? req.query.name.toLowerCase() : '';
-    const locationQuery = req.query.location ? req.query.location.toLowerCase() : '';
-    const priceRangeQuery = req.query.priceRange ? req.query.priceRange : '';
+    const searchQuery = req.query.name ? req.query.name.toLowerCase() : "";
+    const locationQuery = req.query.location
+      ? req.query.location.toLowerCase()
+      : "";
+    const priceRangeQuery = req.query.priceRange ? req.query.priceRange : "";
 
-    // Preprocess search query for sorting
     const sortedSearchQuery = searchQuery
       .split(" ")
       .map((word) => word.split("").sort().join(""))
       .join(" ");
 
-    // Fetch products from the database
     const products = await productModel.find().lean();
 
-    // Filter products based on the search query, location, and price range
     const matchedProducts = products.filter((product) => {
-      // Preprocess product name for sorting
       const sortedProductName = product.name
         .toLowerCase()
         .split(" ")
         .map((word) => word.split("").sort().join(""))
         .join(" ");
 
-      // Check if the sorted product name includes the sorted search query
       const nameMatch = sortedProductName.includes(sortedSearchQuery);
 
-      // Check if the location matches
-      const locationMatch = !locationQuery || product.location.toLowerCase().includes(locationQuery);
+      const locationMatch =
+        !locationQuery ||
+        product.location.toLowerCase().includes(locationQuery);
 
-      // Check if the price falls within the specified range
       let priceMatch = true;
       if (priceRangeQuery) {
         const [minPrice, maxPrice] = priceRangeQuery.split("-").map(Number);
@@ -71,16 +68,80 @@ const getProductsBySearch = async (req, res, next) => {
         }
       }
 
-      // Return true if all conditions match
       return nameMatch && locationMatch && priceMatch;
     });
 
-    res.json({matchedProducts: matchedProducts});
+    res.json({ matchedProducts: matchedProducts });
   } catch (error) {
     res.json({ error: error.message });
   }
 };
 
+const getProductsBySearchInProperties = async (req, res, next) => {
+  try {
+    const { subCategoryName } = req.params;
+    const {
+      location = "",
+      bedRooms = "",
+      bathRooms = "",
+      area = "",
+      rangePrice = "",
+    } = req.query;
+
+    const subCategory = await subCategoriesModel.findOne({
+      name: subCategoryName,
+    });
+    if (!subCategory) {
+      return res.status(404).json({ error: "Subcategory not found" });
+    }
+
+    const products = await productModel
+      .find({ subCategoryId: subCategory._id })
+      .lean();
+
+    const matchedProducts = products.filter((product) => {
+      const productLocation = product.location?.toLowerCase();
+      const productBedRooms = product.bedRooms?.toString().toLowerCase();
+      const productBathRooms = product.bathRooms?.toString().toLowerCase();
+      const productArea = product.area?.toString().toLowerCase();
+      const productPrice = parseInt(product.price);
+
+      const locationMatch =
+        !location || productLocation.includes(location.toLowerCase());
+      const bedRoomsMatch =
+        !bedRooms ||
+        (productBedRooms && productBedRooms === bedRooms.toLowerCase());
+      const bathRoomsMatch =
+        !bathRooms ||
+        (productBathRooms && productBathRooms === bathRooms.toLowerCase());
+      const areaMatch =
+        !area || (productArea && productArea === area.toLowerCase());
+
+      let priceMatch = true;
+      if (rangePrice) {
+        const [minPrice, maxPrice] = rangePrice.split("-").map(Number);
+        if (minPrice && product.price < minPrice) {
+          priceMatch = false;
+        }
+        if (maxPrice && product.price > maxPrice) {
+          priceMatch = false;
+        }
+      }
+
+      return (
+        locationMatch &&
+        bedRoomsMatch &&
+        bathRoomsMatch &&
+        areaMatch &&
+        priceMatch
+      );
+    });
+
+    res.json({ matchedProducts: matchedProducts });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
 
 const postProduct = async (req, res, next) => {
   const data = req.body;
@@ -173,4 +234,5 @@ module.exports = {
   getAllProducts,
   getProdBySub_CategoryName,
   getProductsBySearch,
+  getProductsBySearchInProperties,
 };
