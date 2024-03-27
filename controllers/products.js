@@ -103,8 +103,7 @@ const getProductsBySearchInProperties = async (req, res, next) => {
       const productLocation = product.location?.toLowerCase();
       const productBedRooms = product.bedRooms?.toString().toLowerCase();
       const productBathRooms = product.bathRooms?.toString().toLowerCase();
-      const productArea = product.area?.toString().toLowerCase();
-      const productPrice = parseInt(product.price);
+      const productArea = product.area;
 
       const locationMatch =
         !location || productLocation.includes(location.toLowerCase());
@@ -114,34 +113,46 @@ const getProductsBySearchInProperties = async (req, res, next) => {
       const bathRoomsMatch =
         !bathRooms ||
         (productBathRooms && productBathRooms === bathRooms.toLowerCase());
-      const areaMatch =
-        !area || (productArea && productArea === area.toLowerCase());
+
+      let areaMatch = true;
+      if (area) {
+        const [minArea, maxArea] = area.split("-").map((value) => {
+          if (isNaN(value)) return value; 
+          return parseInt(value);
+        });
+
+        if (minArea > 0 && maxArea === 0) {
+          areaMatch = true; 
+        } else if (minArea > 0 && isNaN(maxArea)) {
+          areaMatch = productArea >= minArea;
+        } else if (minArea === 0 && maxArea < Infinity) {
+          areaMatch = productArea <= maxArea;
+        } else if (minArea > 0 && maxArea > 0) {
+          areaMatch = productArea >= minArea && productArea <= maxArea;
+        }
+      }
 
       let priceMatch = true;
       if (rangePrice) {
         const [minPrice, maxPrice] = rangePrice.split("-").map(Number);
-        if (minPrice && product.price < minPrice) {
-          priceMatch = false;
-        }
-        if (maxPrice && product.price > maxPrice) {
-          priceMatch = false;
+        if (minPrice === 0 && isNaN(maxPrice)) {
+          priceMatch = true; 
+        } else if (minPrice > 0 && isNaN(maxPrice)) {
+          priceMatch = product.price >= minPrice; 
+        } else if (minPrice >= 0 && maxPrice > 0) {
+          priceMatch = product.price >= minPrice && product.price <= maxPrice; 
         }
       }
 
-      return (
-        locationMatch &&
-        bedRoomsMatch &&
-        bathRoomsMatch &&
-        areaMatch &&
-        priceMatch
-      );
+      return locationMatch && bedRoomsMatch && bathRoomsMatch && areaMatch && priceMatch;
     });
 
-    res.json({ matchedProducts: matchedProducts });
+    res.json({ matchedProducts });
   } catch (error) {
-    res.json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
+
 
 const postProduct = async (req, res, next) => {
   const data = req.body;
