@@ -14,7 +14,7 @@ const productSchema = mongoose.Schema(
       ref: "user",
     },
     price_type: String,
-     location: {
+    location: {
       type: String,
       default: "",
       required: true,
@@ -27,12 +27,12 @@ const productSchema = mongoose.Schema(
     contact_type: String,
     phoneNumber: String,
     propertyType: String,
-    area:String,
-    amenities:[String],
-    bedRooms:String,
-    bathRooms:String,
+    area: String,
+    amenities: [String],
+    bedRooms: String,
+    bathRooms: String,
     model: String,
-    brand:String,
+    brand: String,
   },
   { timestamps: true }
 );

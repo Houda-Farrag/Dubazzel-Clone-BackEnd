@@ -4,7 +4,7 @@ const { productModel } = require("../Models/products")
 const getAllCategories = async (req, res, next) => {
     try {
         const allCategories = await categoryModel.find()
-        res.status(201).json({ AllCategories: allCategories })
+        res.status(201).json(allCategories)
     }
     catch (err) {
         res.status(401).json({ MSG: "there is something wrong in catogeries" })
