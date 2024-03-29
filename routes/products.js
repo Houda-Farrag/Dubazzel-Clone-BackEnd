@@ -7,11 +7,15 @@ const {
   deleteProduct,
   getAllProducts,
   getProdBySub_CategoryName, 
-  getSellerAds
+  getSellerAds,
+  getProductsBySearch,
+  getProductsBySearchInProperties
 } = require("../Controllers/products");
 const verifyJWT = require("../middleware/verifyJWT");
 
 router.get("/get/:id", getProduct);
+router.get("/search", getProductsBySearch);
+router.get("/search/:subCategoryName", getProductsBySearchInProperties);
 router.get("/getUserAds/:userId", getSellerAds);
 router.get("/getbysubcateboryname",getProdBySub_CategoryName)
 router.get("/get", getAllProducts);
