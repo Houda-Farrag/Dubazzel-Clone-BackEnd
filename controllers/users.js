@@ -159,7 +159,19 @@ const updateUserProfile = async(req,res,next)=>{
     }
 }
 
+
+const getUserForSideBar = async (req , res , next)=>{
+    try {
+        const loggedInUser = req.userId
+        const allUsers = await userModel.find({_id: {$ne : loggedInUser}}).select("-password")
+
+        res.status(200).json({allUsers})
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 module.exports = {
-    getUserProfile, updateProfile, deleteUser,
+    getUserProfile, updateProfile, deleteUser, getUserForSideBar,
     getAllUsers, addProductToFavourite, getUserFavouriteProducts , getProfileData , getMyProfile , deleteProductFromFavourite, updateUserProfile
 };

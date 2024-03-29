@@ -2,10 +2,7 @@ const path = require('path');
 const mongooseConnect = require("mongoose")
 const express = require('express')
 const multer = require('multer');
-const cookieParser = require('cookie-parser');
-const app = express()
 const cors = require('cors')
-app.use(cookieParser());
 const { ordersRoute } = require('./Routes/ordersRoute')
 const { propertiesRoute } = require('./Routes/propertiesRoute')
 const { shoppingRoute } = require('./Routes/shoppingRoute')
@@ -22,7 +19,8 @@ const loginAdminRoute = require('./routes/loginAdmin')
 const logoutAdminRoute = require('./routes/logoutAdmin')
 const routerSubCategory = require('./Routes/sub-categories')
 const RatingReviewsrouter = require('./routes/ReviewsAndRatings')
-const Chatrouter = require('./routes/chat')
+const Chatrouter = require('./routes/messages');
+const { app, server } = require('./socket/socket');
 // ---------------- connect to database local and 
 const DBlocal = "mongodb://localhost:27017/Dubazzile_Version_2"
 const DBurl = 'mongodb+srv://Mena:dubizzle123456@dubizzle.udouey4.mongodb.net/Dubizzle?retryWrites=true&w=majority'
@@ -35,7 +33,6 @@ mongooseConnect.connect(DBurl).then((data) => {
 })
 
 
-app.set('views', 'views');
 
 
 app.use(cors()) // search (cors origins)
@@ -115,7 +112,7 @@ app.use((err, req, res, next) => {
 
 
 const port = 3000
-app.listen(port, () => {
+server.listen(port, () => {
     console.log("server connected port : " + port)
 })
 
