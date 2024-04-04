@@ -21,12 +21,14 @@ const adminsSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    minLength: [8, "minimum lenghth is 6"],
+    maxLength: [15, "maximum lenghth is 15"],
+    trim: true,
+    required: [true, "title isrequired"],
   },
   roles: {},
   refreshToken: String
 }, { collection: 'Admins' })
-
 
 const adminModel = mongoose.model('Admins', adminsSchema)
 
