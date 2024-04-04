@@ -218,7 +218,7 @@ const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     try {
         const deletedProduct = await productModel.deleteOne({ _id: id });
-        res.json({ MSG: `Your selected product with id : ${id} is now deleted` });
+        res.status(200).json({ MSG: `Your selected product with id : ${id} is now deleted` });
     } catch (err) {
         res.json({ MSG: "Can not delete your selected product please try again" });
     }
@@ -254,6 +254,16 @@ const getSellerAds = async (req, res, next) => {
     }
 };
 
+const getMyAdds = async (req , res , next)=>{
+    const userID = req.userId
+    try {
+        const myProducts = await productModel.find({sellerId: userID})
+        res.status(200).json({myProducts : myProducts})
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 module.exports = {
     postProduct,
     getProduct,
@@ -264,5 +274,6 @@ module.exports = {
     getProdBySub_CategoryName,
     getProductsBySearch,
     getProductsBySearchInProperties,
-    deleteAllProductWithIdSeller
+    deleteAllProductWithIdSeller,
+    getMyAdds
 };
