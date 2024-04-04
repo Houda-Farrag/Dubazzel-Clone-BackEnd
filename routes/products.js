@@ -10,7 +10,8 @@ const {
   getSellerAds,
   getProductsBySearch,
   getProductsBySearchInProperties,
-  deleteAllProductWithIdSeller
+  deleteAllProductWithIdSeller,
+  getMyAdds
 } = require("../Controllers/products");
 const verifyJWT = require("../middleware/verifyJWT");
 
@@ -20,9 +21,11 @@ router.get("/search/:subCategoryName", getProductsBySearchInProperties);
 router.get("/getUserAds/:userId", getSellerAds);
 router.get("/getbysubcateboryname", getProdBySub_CategoryName)
 router.get("/get", getAllProducts);
+router.get("/getmyadds", verifyJWT, getMyAdds)
 router.post("/add", verifyJWT, postProduct);
 router.patch("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.delete("/delete/:id", verifyJWT ,deleteProduct);
 router.delete("/userProducts/:idSeller", deleteAllProductWithIdSeller);
+
 
 module.exports = router;
