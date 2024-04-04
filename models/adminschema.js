@@ -22,9 +22,8 @@ const adminsSchema = mongoose.Schema({
   password: {
     type: String,
     minLength: [8, "minimum lenghth is 6"],
-    maxLength: [15, "maximum lenghth is 15"],
     trim: true,
-    required: [true, "title isrequired"],
+    required: [true, "password isrequired"],
   },
   roles: {},
   refreshToken: String

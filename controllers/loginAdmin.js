@@ -4,21 +4,23 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const handleAdminLogin = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password)
+  const { username, password, email } = req.body;
+
+  if (!username || !password || !email)
     return res
       .status(400)
-      .json({ message: "Username and password are required." });
+      .json({ message: "Username, password and email are required." });
 
   try {
-    const foundAdmin = await adminModel.findOne({ username: username });
+    const foundAdmin = await adminModel.findOne({ username: username, email: email });
 
-    if (!foundAdmin) return res.sendStatus(401); // Unauthorized
+    if (!foundAdmin) return res.status(401).json({ mes: "unauthorized" }); // Unauthorized
 
     const match = await bcrypt.compare(password, foundAdmin.password);
     if (match) {
       // Create JWTs
       const roles = Object.values(foundAdmin.roles);
+
       const accessToken = jwt.sign(
         {
           UserInfo: {
@@ -30,6 +32,7 @@ const handleAdminLogin = async (req, res) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "5m" }
       );
+
       const refreshToken = jwt.sign(
         { username: foundAdmin.username, userType: "admin" },
         process.env.REFRESH_TOKEN_SECRET,
@@ -51,6 +54,7 @@ const handleAdminLogin = async (req, res) => {
     } else {
       res.sendStatus(401);
     }
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

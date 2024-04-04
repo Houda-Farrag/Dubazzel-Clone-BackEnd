@@ -1,8 +1,9 @@
-const { adminModel } = require('../Models/adminschema')
+const adminModel = require('../Models/adminschema')
 const bcrypt = require('bcrypt')
 
 const handleAdmin = async (req, res) => {
   const { username, password } = req.body;
+
   if (!username || !password) return res.status(400).json({ 'message': 'Username and password are required.' });
   try {
     const duplicate = await adminModel.findOne({ username: username });
@@ -22,7 +23,7 @@ const handleAdmin = async (req, res) => {
     res.status(201).json({ 'success': `New Admin ${username} created!` });
 
   } catch (error) {
-    res.status(500).json({ 'message': error.message });
+    res.status(500).json({ 'message': error.message, fromme: "new erroro" });
   }
 };
 
