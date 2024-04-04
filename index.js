@@ -1,5 +1,6 @@
 const path = require('path');
 const mongooseConnect = require("mongoose")
+const cloudinary = require('cloudinary').v2;
 const express = require('express')
 const multer = require('multer');
 const cors = require('cors')
@@ -48,31 +49,48 @@ app.use('/logoutAdmin', logoutAdminRoute)
 
 
 // Multer Setup for storing imaegs
-const storage = multer.diskStorage({
-    destination: './upload/images',
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET_KEY
+  });
+  
+  const storage = multer.diskStorage({
+    // destination: './upload/images',
     filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+      cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
-});
-
-const upload = multer({ storage, limits: { files: 5 } });
-
-app.use('/images', express.static('./upload/images'));
-
-app.post('/upload', upload.array('images', 5), (req, res) => {
-    try {
-        const imageUrls = req.files.map(file => {
-            return `http://localhost:${port}/images/${file.filename}`;
+  });
+  
+  const upload = multer({ storage, limits: { files: 5 } });
+    
+  app.post('/upload', upload.array('images', 5), function (req, res) {
+    const promises = req.files.map(file => {
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, function (err, result) {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(result.secure_url);
+          }
         });
-        res.json({
-            success: 1,
-            image_urls: imageUrls
+      });
+    });
+  
+    Promise.all(promises)
+      .then(imageUrls => {
+        res.status(200).json({
+          success: true,
+          message: "Uploaded!",
+          image_urls: imageUrls
         });
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        res.status(500).json({ success: 0, message: 'Internal server error' });
-    }
-});
+      })
+      .catch(error => {
+        console.error('Error uploading files:', error);
+        res.status(500).json({ success: false, message: 'Error uploading files' });
+      });
+  });
 
 
 app.use('/orders', ordersRoute)
