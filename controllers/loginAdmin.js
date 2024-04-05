@@ -4,15 +4,15 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const handleAdminLogin = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password } = req.body;
 
-  if (!username || !password || !email)
+  if (!username || !password)
     return res
       .status(400)
       .json({ message: "Username, password and email are required." });
 
   try {
-    const foundAdmin = await adminModel.findOne({ username: username, email: email });
+    const foundAdmin = await adminModel.findOne({ username: username });
 
     if (!foundAdmin) return res.status(401).json({ mes: "unauthorized" }); // Unauthorized
 
@@ -26,6 +26,7 @@ const handleAdminLogin = async (req, res) => {
           UserInfo: {
             username: foundAdmin.username,
             roles: roles,
+            avatar: foundAdmin.avatar,
             userType: "admin",
           },
         },

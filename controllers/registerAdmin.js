@@ -15,6 +15,7 @@ const handleAdmin = async (req, res) => {
       username: username,
       email: req.body.email,
       password: hashedPwd,
+      avatar: req.body.img,
       roles: { "User": 2001, "Admin": 5150 }
     });
 

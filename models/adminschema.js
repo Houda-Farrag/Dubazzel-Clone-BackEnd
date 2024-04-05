@@ -25,6 +25,7 @@ const adminsSchema = mongoose.Schema({
     trim: true,
     required: [true, "password isrequired"],
   },
+  avatar: String,
   roles: {},
   refreshToken: String
 }, { collection: 'Admins' })

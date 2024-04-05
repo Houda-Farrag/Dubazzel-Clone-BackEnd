@@ -254,13 +254,13 @@ const getSellerAds = async (req, res, next) => {
     }
 };
 
-const getMyAdds = async (req , res , next)=>{
+const getMyAdds = async (req, res, next) => {
     const userID = req.userId
     try {
-        const myProducts = await productModel.find({sellerId: userID})
-        res.status(200).json({myProducts : myProducts})
+        const myProducts = await productModel.find({ sellerId: userID })
+        res.status(200).json({ myProducts: myProducts })
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 }
 
