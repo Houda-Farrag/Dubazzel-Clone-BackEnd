@@ -5,12 +5,11 @@ const handleAdminLogout = async (req, res) => {
   console.log(req.headers.authorization)
   if (!authorization) {
     console.log("No jwt cookie found");
-    return res.sendStatus(204); // No content
+    return res.status(204); // No content
   }
 
   try {
     const foundAdmin = await adminModel.findOne({ refreshToken: authorization });
-    console.log(foundAdmin);
 
     if (!foundAdmin) {
       return res.status(404).json({ MSG: "Logged out unsuccessfully but no jwt authorization found" });

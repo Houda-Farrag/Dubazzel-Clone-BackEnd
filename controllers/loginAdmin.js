@@ -5,12 +5,10 @@ require("dotenv").config();
 
 const handleAdminLogin = async (req, res) => {
   const { username, password } = req.body;
-
   if (!username || !password)
     return res
       .status(400)
       .json({ message: "Username, password and email are required." });
-
   try {
     const foundAdmin = await adminModel.findOne({ username: username });
 
@@ -27,6 +25,8 @@ const handleAdminLogin = async (req, res) => {
             username: foundAdmin.username,
             roles: roles,
             avatar: foundAdmin.avatar,
+            email: foundAdmin.email,
+            description: `${foundAdmin.username} is FullStackDeveloper and Admin in our Website Dubazzel you can Contact with him in ${foundAdmin.email}`,
             userType: "admin",
           },
         },
