@@ -2,7 +2,6 @@ const adminModel = require("../Models/adminschema");
 
 const handleAdminLogout = async (req, res) => {
   const { authorization } = req.headers;
-  console.log(req.headers.authorization)
   if (!authorization) {
     console.log("No jwt cookie found");
     return res.status(204); // No content

@@ -18,8 +18,7 @@ const getProduct = async (req, res, next) => {
 
 const getAllProducts = async (req, res, next) => {
     try {
-        console.log(req.user);
-        console.log(req.roles);
+
         const products = await productModel.find({});
         res.status(201).json(products);
     } catch (err) {
